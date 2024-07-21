@@ -1,0 +1,6 @@
+# A really small bash script that reads the API key from the command line and
+# Adds it into the enviromental variable hcloud_token
+
+read -sp "Enter the Hetzner API TOCKEN for Tofu" -s TOKEN
+export TF_VAR_hcloud_token="$TOKEN"
+printf "\nAdded the impot into hcloud_token env variable for OpenTOFU to use\n"

@@ -1,0 +1,12 @@
+resource "hcloud_server" "test" {
+  count       = var.instances
+  name        = "test-server-${count.index}"
+  image       = var.os_type
+  server_type = var.server_type
+  location    = var.location
+  ssh_keys    = [data.hcloud_ssh_key.ssh_key_1.name]
+  labels = {
+    type = "test"
+  }
+#  user_data = file("user_data.yml")
+}

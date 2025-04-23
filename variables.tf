@@ -4,12 +4,10 @@ variable "hcloud_token" {
     description = "Hetzner Cloud API token"
     type = string
 }
-
+# Nurnberg 1
 variable "location" {
-  default = "hel1"
+  default = "nbg1"
 }
-
-#hel1-dc2
 
 variable "http_protocol" {
   default = "http"
@@ -35,3 +33,12 @@ variable "disk_size" {
   default = "40"
 } 
 
+variable "firewall" {
+  type    = list(number)
+  default = [1422971]
+}
+
+variable "datacenter" {
+  type = string
+  default = "nbg1-dc3"
+}

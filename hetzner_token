@@ -1,3 +1,4 @@
+#!/bin/bash
 # A really small bash script that reads the API key from the command line and
 # Adds it into the enviromental variable hcloud_token
 

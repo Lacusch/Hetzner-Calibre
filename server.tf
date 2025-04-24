@@ -10,5 +10,10 @@ resource "hcloud_server" "test" {
   }
   firewall_ids = var.firewall
   datacenter = var.datacenter
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = true
+    ipv6 = data.hcloud_primary_ip.floating_ip.id
+  }
 #  user_data = file("user_data.yml")
 }

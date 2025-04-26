@@ -12,8 +12,8 @@ provider "hcloud" {
   token = var.hcloud_token
 }
 
-data "hcloud_ssh_key" "ssh_key_1" {
-  id = "20954862"
+data "hcloud_ssh_key" "fedora_laptop_ssh_key" {
+  id = "28667665"
 }
 
 data "hcloud_primary_ip" "floating_ip" {

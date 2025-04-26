@@ -4,7 +4,7 @@ resource "hcloud_server" "test" {
   image       = var.os_type
   server_type = var.server_type
 #  location    = var.location
-  ssh_keys    = [data.hcloud_ssh_key.ssh_key_1.name]
+  ssh_keys    = [data.hcloud_ssh_key.fedora_laptop_ssh_key.name]
   labels = {
     type = "test"
   }

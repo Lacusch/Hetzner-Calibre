@@ -1,18 +1,13 @@
----
-# Ansible playbook to set up Calibre with Podman on Rocky Linux
 - name: Configure Calibre using Podman on Rocky Linux
   hosts: calibre_server
-  remote_user : root
+  remote_user: root
   become: true
   vars:
     calibre_container_name: calibre
     calibre_image: docker.io/lacusch/calibre-server:0.1
-    calibre_data_dir: /opt/calibre/data
-    calibre_config_dir: /opt/calibre/config
-    calibre_port_webserver: 80
-    calibre_books_dir: /opt/calibre/books
+    calibre_library_dir: /root/Calibre-Libary
+    calibre_port: 8080
     timezone: "Europe/Berlin"
-
   tasks:
     - name: Install required packages
       dnf:
@@ -21,50 +16,36 @@
           - python3-podman
         state: present
         update_cache: yes
-
-    - name: Create calibre directories
-      file:
-        path: "{{ item }}"
-        state: directory
-        mode: '0755'
-        owner: root
-        group: root
-      loop:
-        - "{{ calibre_data_dir }}"
-        - "{{ calibre_config_dir }}"
-        - "{{ calibre_books_dir }}"
-
+    
     - name: Pull Calibre Docker image
       containers.podman.podman_image:
         name: "{{ calibre_image }}"
         state: present
-
-    - name: Create Calibre container
-      containers.podman.podman_container:
-        name: "{{ calibre_container_name }}"
-        image: "{{ calibre_image }}"
-        state: started
-        restart_policy: always
-        ports:
-          - "{{ calibre_port_webserver }}:8080"
-        env:
-          PUID: "1000"
-          PGID: "1000"
-          TZ: "{{ timezone }}"
-          CLI_ARGS: "--username admin --password admin123" # Optional args for setting up the Calibre content server
-        volumes:
-          - "{{ calibre_config_dir }}:/config"
-          - "{{ calibre_books_dir }}:/books"
-          - "{{ calibre_data_dir }}:/data"
-
+    
     - name: Create systemd service file for Calibre container
-      template:
-        src: templates/calibre-container.service.j2
+      copy:
         dest: /etc/systemd/system/calibre-container.service
         owner: root
         group: root
         mode: '0644'
-
+        content: |
+          [Unit]
+          Description=Calibre Content Server container
+          After=network.target
+          
+          [Service]
+          Restart=always
+          ExecStart=/usr/bin/podman run --rm --name {{ calibre_container_name }} \
+            -p {{ calibre_port }}:8080 \
+            -v {{ calibre_library_dir }}:/etc/calibre/library:Z \
+            {{ calibre_image }} \
+            /usr/bin/calibre-server /etc/calibre/library
+          ExecStop=/usr/bin/podman stop -t 10 {{ calibre_container_name }}
+          ExecStopPost=/usr/bin/podman rm -f {{ calibre_container_name }}
+          
+          [Install]
+          WantedBy=multi-user.target
+    
     - name: Enable and start Calibre container service
       systemd:
         name: calibre-container.service

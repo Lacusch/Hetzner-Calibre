@@ -1,0 +1,21 @@
+IMAGE_NAME := "lacusch/calibre-server"
+IMAGE_TAG := "0.1"
+PLATFORM := "linux/amd64"  # or e.g., linux/arm64 if you want multi-arch builds
+BUILD_DATE := `date -u +%Y-%m-%dT%H:%M:%SZ`
+
+default:
+    build
+build:
+    podman build . \
+        --platform {{PLATFORM}} \
+        --tag {{IMAGE_NAME}}:{{IMAGE_TAG}} \
+        --label org.opencontainers.image.created={{BUILD_DATE}}
+push: login
+    podman push {{IMAGE_NAME}}:{{IMAGE_TAG}} docker://docker.io/{{IMAGE_NAME}}:{{IMAGE_TAG}}
+login:
+    if ! podman login --get-login docker.io >/dev/null 2>&1; then \
+        podman login docker.io; \
+    else \
+        echo "Already logged in to Docker Hub"; \
+    fi
+

@@ -1,11 +1,10 @@
 FROM ubuntu:24.04 AS build
-LABEL org.opencontainsers.image=.title"Calibre Server"
-LABEL org.opencontainsers.image.description="Container image of calibre server"
-LABEL org.opencontainsers.image.version="0.1"
-LABEL org.opencontainsers.image.authors="szabo.lacus.2001@gmail.com"
-LABEL org.opencontainsers.image.source="https://calibre-ebook.com"
-LABEL org.opencontainsers.image.licenses="GPL-3.0-or-later"
-
+LABEL org.opencontainers.image=.title"Calibre Server"
+LABEL org.opencontainers.image.description="Container image of calibre server"
+LABEL org.opencontainers.image.version="0.1"
+LABEL org.opencontainers.image.authors="szabo.lacus.2001@gmail.com"
+LABEL org.opencontainers.image.source="https://calibre-ebook.com"
+LABEL org.opencontainers.image.licenses="GPL-3.0-or-later"
 RUN apt-get update && apt-get install -y \
 wget \ 
 python3 \ 
@@ -26,4 +25,4 @@ libxcb-render-util0 \
 freeglut3-dev \
 && rm -rf /var/lib/apt/lists/*
 RUN wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin
-
+CMD ["calibre-server", "/library"]

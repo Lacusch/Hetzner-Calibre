@@ -1,17 +1,17 @@
 ---
 # Ansible playbook to set up Calibre with Podman on Rocky Linux
 - name: Configure Calibre using Podman on Rocky Linux
-  hosts: calibre_servers
+  hosts: calibre_server
+  remote_user : root
   become: true
   vars:
     calibre_container_name: calibre
-    calibre_image: linuxserver/calibre:latest
+    calibre_image: docker.io/lacusch/calibre-server:0.1
     calibre_data_dir: /opt/calibre/data
     calibre_config_dir: /opt/calibre/config
+    calibre_port_webserver: 80
     calibre_books_dir: /opt/calibre/books
-    calibre_port_gui: 8080
-    calibre_port_webserver: 8081
-    timezone: "America/New_York" # Change to your timezone
+    timezone: "Europe/Berlin"
 
   tasks:
     - name: Install required packages
@@ -46,8 +46,7 @@
         state: started
         restart_policy: always
         ports:
-          - "{{ calibre_port_gui }}:8080"
-          - "{{ calibre_port_webserver }}:8081"
+          - "{{ calibre_port_webserver }}:8080"
         env:
           PUID: "1000"
           PGID: "1000"

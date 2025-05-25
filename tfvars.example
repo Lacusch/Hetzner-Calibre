@@ -29,7 +29,7 @@ variable "datacenter" {
 # types can be found on the pricing page
 # https://www.hetzner.com/cloud/#pricing
 variable "server_type" {
-  default = "cax11"
+  default = "cx22"
 }
 
 # OS type

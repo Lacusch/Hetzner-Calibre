@@ -1,19 +1,18 @@
 resource "hcloud_server" "test" {
-  count       = var.instances
-  name        = "test-server-${count.index}"
+  name        = var.server_name
   image       = var.os_type
   server_type = var.server_type
-#  location    = var.location
-  ssh_keys    = [data.hcloud_ssh_key.fedora_laptop_ssh_key.name]
+  #  location    = var.location
+  ssh_keys = [data.id_ed22519_pub]
   labels = {
-    type = "test"
+    type = "calibre"
   }
   firewall_ids = var.firewall
-  datacenter = var.datacenter
+  datacenter   = var.datacenter
   public_net {
     ipv4_enabled = true
     ipv6_enabled = true
-    ipv6 = data.hcloud_primary_ip.floating_ip.id
   }
-#  user_data = file("user_data.yml")
+  #  user_data = file("user_data.yml")
 }
+

@@ -1,12 +1,19 @@
+# Name of the server
+#
+variable "server_name" {
+  description = "Name of the server"
+  type = string
+}
 # Hetzner API token
 # https://docs.hetzner.com/cloud/api/getting-started/generating-api-token/
 variable "hcloud_token" {
-# 
-    sensitive = true
-    description = "Hetzner Cloud API token"
-    type = string
+  sensitive = true
+  description = "Hetzner Cloud API token"
+  type = string
 }
 # Location to put the server in 
+# In this repo this is not used and is commented out in the
+# server.tf file
 # https://docs.hetzner.com/cloud/general/locations
 variable "location" {
   default = "nbg1"
@@ -44,3 +51,16 @@ variable "disk_size" {
 #  type    = list(number)
 #  default = [1422971]
 #}
+
+# variables.tf
+variable "ssh_public_key_path" {
+  description = "Path to SSH public key file relative to repo root"
+  type        = string
+  default     = "ssh_keys/id_rsa.pub"
+  
+  validation {
+    condition     = can(file("${path.module}/${var.ssh_public_key_path}"))
+    error_message = "SSH public key file must exist in the specified path."
+  }
+}
+

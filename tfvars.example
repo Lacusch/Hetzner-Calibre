@@ -1,6 +1,7 @@
 # Name of the server
 #
 variable "server_name" {
+  default =  "calibre-server"
   description = "Name of the server"
   type = string
 }
@@ -42,16 +43,6 @@ variable "disk_size" {
   default = "40"
 } 
 
-# Firewall
-# firewall can be selected from already exising once or creating here
-#
-
-# Taking an already exisiting firewall from the Hetzner account
-# variable "firewall" {
-#  type    = list(number)
-#  default = [1422971]
-#}
-
 # variables.tf
 variable "ssh_public_key_path" {
   description = "Path to SSH public key file relative to repo root"
@@ -61,6 +52,19 @@ variable "ssh_public_key_path" {
   validation {
     condition     = can(file("${path.module}/${var.ssh_public_key_path}"))
     error_message = "SSH public key file must exist in the specified path."
+  }
+}
+
+resource "hcloud_firewall" "calibre_firewall" {
+  name = "calibre-firewall"
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+   port       = "22"
   }
 }
 

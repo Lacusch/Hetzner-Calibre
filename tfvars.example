@@ -1,0 +1,46 @@
+# Hetzner API token
+# https://docs.hetzner.com/cloud/api/getting-started/generating-api-token/
+variable "hcloud_token" {
+# 
+    sensitive = true
+    description = "Hetzner Cloud API token"
+    type = string
+}
+# Location to put the server in 
+# https://docs.hetzner.com/cloud/general/locations
+variable "location" {
+  default = "nbg1"
+}
+
+# Datacenter to put the server in https://docs.hetzner.cloud/#datacenters
+variable "datacenter" {
+  type = string
+  default = "nbg1-dc3"
+}
+# Type of server
+# types can be found on the pricing page
+# https://www.hetzner.com/cloud/#pricing
+variable "server_type" {
+  default = "cax11"
+}
+
+# OS type
+# No direct doc for OS images, only and API endpoint
+# https://docs.hetzner.cloud/#isos
+variable "os_type" {
+  default = "rocky-9"
+}
+# Disk size
+variable "disk_size" {
+  default = "40"
+} 
+
+# Firewall
+# firewall can be selected from already exising once or creating here
+#
+
+# Taking an already exisiting firewall from the Hetzner account
+# variable "firewall" {
+#  type    = list(number)
+#  default = [1422971]
+#}

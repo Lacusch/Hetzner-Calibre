@@ -43,18 +43,6 @@ variable "disk_size" {
   default = "40"
 } 
 
-# variables.tf
-variable "ssh_public_key_path" {
-  description = "Path to SSH public key file relative to repo root"
-  type        = string
-  default     = "ssh_keys/id_rsa.pub"
-  
-  validation {
-    condition     = can(file("${path.module}/${var.ssh_public_key_path}"))
-    error_message = "SSH public key file must exist in the specified path."
-  }
-}
-
 resource "hcloud_firewall" "calibre_firewall" {
   name = "calibre-firewall"
   rule {

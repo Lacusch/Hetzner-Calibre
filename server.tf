@@ -1,8 +1,4 @@
-resource "hcloud_ssh_key" "main" {
-  name       = "my-ssh-key"
-  public_key = file("~/.ssh/id_ed25519.pub")
-}
-resource "hcloud_server" "test" {
+resource "hcloud_server" "calibre_server" {
   name        = var.server_name
   image       = var.os_type
   server_type = var.server_type
@@ -11,7 +7,7 @@ resource "hcloud_server" "test" {
   labels = {
     type = "calibre"
   }
-  firewall_ids =  [hcloud_firewall.calibre_firewall.id]
+  firewall_ids = [hcloud_firewall.calibre_firewall.id]
   datacenter   = var.datacenter
   public_net {
     ipv4_enabled = true

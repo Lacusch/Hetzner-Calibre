@@ -3,6 +3,9 @@
 This repo is used for deploying a Calibre content server (using podman and systemd
 service file) with a example libary.
 
+## Demo video
+
+[~6 minute demo video of the deployment](./demo/demo.webm)
 For deployment the required tools are `ansible` `terraforn˙ or `tofu˙
 
 Package installation:

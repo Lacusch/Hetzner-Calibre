@@ -1,16 +1,16 @@
 # Name of the server
 #
 variable "server_name" {
-  default =  "calibre-server"
+  default     = "calibre-server"
   description = "Name of the server"
-  type = string
+  type        = string
 }
 # Hetzner API token
 # https://docs.hetzner.com/cloud/api/getting-started/generating-api-token/
 variable "hcloud_token" {
-  sensitive = true
+  sensitive   = true
   description = "Hetzner Cloud API token"
-  type = string
+  type        = string
 }
 # Location to put the server in 
 # In this repo this is not used and is commented out in the
@@ -22,7 +22,7 @@ variable "location" {
 
 # Datacenter to put the server in https://docs.hetzner.cloud/#datacenters
 variable "datacenter" {
-  type = string
+  type    = string
   default = "nbg1-dc3"
 }
 # Type of server
@@ -41,7 +41,7 @@ variable "os_type" {
 # Disk size
 variable "disk_size" {
   default = "40"
-} 
+}
 
 resource "hcloud_firewall" "calibre_firewall" {
   name = "calibre-firewall"
@@ -52,7 +52,16 @@ resource "hcloud_firewall" "calibre_firewall" {
       "0.0.0.0/0",
       "::/0"
     ]
-   port       = "22"
+    port = "22"
+  }
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "80"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
   }
 }
 

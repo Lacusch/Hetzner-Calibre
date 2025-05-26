@@ -6,7 +6,7 @@
     calibre_container_name: calibre
     calibre_image: docker.io/lacusch/calibre-server:0.1
     calibre_library_dir: /root/Calibre-Libary
-    calibre_port: 8080
+    calibre_port: 80
     timezone: "Europe/Berlin"
   tasks:
     - name: Install required packages
@@ -21,7 +21,14 @@
       containers.podman.podman_image:
         name: "{{ calibre_image }}"
         state: present
-    
+    - name: Copy example library to remote server
+      copy:
+        src: ../books/Calibre-Libary
+        dest: /root
+        owner: root
+        group: root
+        mode: '0755'
+        backup: yes
     - name: Create systemd service file for Calibre container
       copy:
         dest: /etc/systemd/system/calibre-container.service
@@ -37,7 +44,7 @@
           Restart=always
           ExecStart=/usr/bin/podman run --rm --name {{ calibre_container_name }} \
             -p {{ calibre_port }}:8080 \
-            -v {{ calibre_library_dir }}:/etc/calibre/library:Z \
+            -v {{ calibre_library_dir }}:/etc/calibre/library \
             {{ calibre_image }} \
             /usr/bin/calibre-server /etc/calibre/library
           ExecStop=/usr/bin/podman stop -t 10 {{ calibre_container_name }}

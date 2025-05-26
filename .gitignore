@@ -39,3 +39,4 @@ terraform.rc
 .env
 variables.tf
 *.pub
+hosts.txt

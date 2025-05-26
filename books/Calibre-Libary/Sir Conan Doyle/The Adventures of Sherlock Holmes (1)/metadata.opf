@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="uuid_id" version="2.0">
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+        <dc:identifier opf:scheme="calibre" id="calibre_id">1</dc:identifier>
+        <dc:identifier opf:scheme="uuid" id="uuid_id">75721efb-c279-481d-9d31-7dba8dcb7f9e</dc:identifier>
+        <dc:title>The Adventures of Sherlock Holmes</dc:title>
+        <dc:creator opf:file-as="Doyle, Sir Conan" opf:role="aut">Sir Conan Doyle</dc:creator>
+        <dc:contributor opf:file-as="calibre" opf:role="bkp">calibre (8.0.1) [https://calibre-ebook.com]</dc:contributor>
+        <dc:date>1865-07-03T22:00:00+00:00</dc:date>
+        <dc:publisher>Gutenberg Foundation</dc:publisher>
+        <dc:language>eng</dc:language>
+        <dc:subject>mystery</dc:subject>
+        <meta name="calibre:timestamp" content="2025-05-25T22:42:49.903026+00:00"/>
+        <meta name="calibre:title_sort" content="Adventures of Sherlock Holmes, The"/>
+    </metadata>
+    <guide>
+        <reference type="cover" title="Cover" href="cover.jpg"/>
+    </guide>
+</package>

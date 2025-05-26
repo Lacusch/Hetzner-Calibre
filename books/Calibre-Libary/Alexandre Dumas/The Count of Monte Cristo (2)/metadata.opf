@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="uuid_id" version="2.0">
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+        <dc:identifier opf:scheme="calibre" id="calibre_id">2</dc:identifier>
+        <dc:identifier opf:scheme="uuid" id="uuid_id">2bb9208b-37a8-4e40-b63d-852ce5b9cd2e</dc:identifier>
+        <dc:title>The Count of Monte Cristo</dc:title>
+        <dc:creator opf:file-as="Dumas, Alexandre" opf:role="aut">Alexandre Dumas</dc:creator>
+        <dc:contributor opf:file-as="calibre" opf:role="bkp">calibre (8.0.1) [https://calibre-ebook.com]</dc:contributor>
+        <dc:date>2021-02-11T19:17:29+00:00</dc:date>
+        <dc:description>A man seeks revenge for having been falsely imprisoned years earlier.</dc:description>
+        <dc:publisher>Standard Ebooks</dc:publisher>
+        <dc:identifier opf:scheme="URL">https://standardebooks.org/ebooks/alexandre-dumas/the-count-of-monte-cristo/chapman-and-hall</dc:identifier>
+        <dc:language>eng</dc:language>
+        <dc:subject>Historical fiction</dc:subject>
+        <dc:subject>Revenge -- Fiction</dc:subject>
+        <dc:subject>Adventure stories</dc:subject>
+        <dc:subject>Prisoners -- Fiction</dc:subject>
+        <dc:subject>France -- History -- 19th century -- Fiction</dc:subject>
+        <dc:subject>Pirates -- Fiction</dc:subject>
+        <dc:subject>Dantès</dc:subject>
+        <dc:subject>Edmond (Fictitious character) -- Fiction</dc:subject>
+        <meta name="calibre:timestamp" content="2025-05-25T22:42:50.076224+00:00"/>
+        <meta name="calibre:title_sort" content="Count of Monte Cristo, The"/>
+    </metadata>
+    <guide>
+        <reference type="cover" title="Cover" href="cover.jpg"/>
+    </guide>
+</package>

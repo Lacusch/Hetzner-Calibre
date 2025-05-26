@@ -1,7 +1,9 @@
 set dotenv-load := true
 
-default: apply deploy print-access
+default: init apply deploy print-access
 
+init: 
+    tofu init
 destroy:
     tofu destroy
 

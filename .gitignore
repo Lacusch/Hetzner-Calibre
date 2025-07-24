@@ -40,3 +40,4 @@ terraform.rc
 variables.tf
 *.pub
 hosts.txt
+*.log

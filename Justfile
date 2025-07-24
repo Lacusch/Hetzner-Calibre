@@ -6,7 +6,8 @@ init:
     tofu init
 destroy:
     tofu destroy
-
+test-install:
+    ansible-playbook -i ansible/hosts.txt ansible/install.yml --ask-pass --ask-become-pass
 plan:
     tofu plan
 

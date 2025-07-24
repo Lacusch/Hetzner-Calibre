@@ -1,0 +1,22 @@
+- name: Install packages
+  hosts: all
+  become: yes
+  vars:
+    packages:
+      - podman
+      # - podman-compose
+      # - buildah
+      # - skopeo
+      # - crun
+
+  tasks:
+    - name: Update system packages
+      dnf:
+        name: "*"
+        state: latest
+        update_cache: yes
+      tags: update
+    - name: Install Podman
+      dnf:
+        name: "{{ packages }}"
+        state: present

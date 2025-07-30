@@ -41,3 +41,5 @@ variables.tf
 *.pub
 hosts.txt
 *.log
+# ignore iso files
+*.iso

@@ -37,3 +37,15 @@ print-access:
     @echo "Same IP as the server itself on port 80"
     @echo "Should work in these terminals, including Iterm, Ghostty, etc."
     @echo "Full list: (https://github.com/Alhadis/OSC8-Adoption/#terminal-emulators)"
+ansible-vm:
+    #!/usr/bin/env -S bash -euo pipefail
+    set -euo pipefail
+    virt-install --name AlmaLinux-9 \
+    --description 'Alma Linux 9' \
+    --ram 4096 \
+    --vcpus 4 \
+    --osinfo almalinux9 \
+    --network bridge=virbr0 \
+    --cdrom ~/.local/share/libvirt/images/ISOS/AlmaLinux-9.6-x86_64-dvd.iso \
+    --noautoconsole --destroy-on-exit
+#    --graphics vnc,listen=127.0.0.1,port=5901

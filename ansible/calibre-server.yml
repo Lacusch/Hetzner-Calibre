@@ -16,7 +16,7 @@
           - python3-podman
         state: present
         update_cache: yes
-    
+
     - name: Pull Calibre Docker image
       containers.podman.podman_image:
         name: "{{ calibre_image }}"
@@ -27,19 +27,19 @@
         dest: /root
         owner: root
         group: root
-        mode: '0755'
+        mode: "0755"
         backup: yes
     - name: Create systemd service file for Calibre container
       copy:
         dest: /etc/systemd/system/calibre-container.service
         owner: root
         group: root
-        mode: '0644'
+        mode: "0644"
         content: |
           [Unit]
           Description=Calibre Content Server container
           After=network.target
-          
+
           [Service]
           Restart=always
           ExecStart=/usr/bin/podman run --rm --name {{ calibre_container_name }} \
@@ -49,10 +49,10 @@
             /usr/bin/calibre-server /etc/calibre/library
           ExecStop=/usr/bin/podman stop -t 10 {{ calibre_container_name }}
           ExecStopPost=/usr/bin/podman rm -f {{ calibre_container_name }}
-          
+
           [Install]
           WantedBy=multi-user.target
-    
+
     - name: Enable and start Calibre container service
       systemd:
         name: calibre-container.service

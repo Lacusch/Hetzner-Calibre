@@ -1,4 +1,5 @@
 set dotenv-load := true
+export ANSIBLE_LOG_PATH := "./ansible.log"
 
 default: init apply deploy print-access
 
@@ -33,14 +34,7 @@ host:
 
 print-access:
     @echo "SSH access: root@$(tofu output --raw server_ip)"
-    @printf "\033]8;;http://$(tofu output --raw server_ip)\033\\Calibre Content Server link \033]8;;\033\\\\\n"
-    @echo "Same IP as the server itself on port 80"
-    @echo "Should work in these terminals, including Iterm, Ghostty, etc."
-    @echo "Full list: (https://github.com/Alhadis/OSC8-Adoption/#terminal-emulators)"
-ansible-vm:
-    #!/usr/bin/env -S bash -euo pipefail
-    set -euo pipefail
-    virt-install --name AlmaLinux-9 \
+    @printf "\033]8;;http://$(tofu output --raw server_ip)\033\\Calibre Content Server link \033]8;;\033\\\\\n" @echo "Same IP as the server itself on port 80" @echo "Should work in these terminals, including Iterm, Ghostty, etc." @echo "Full list: (https://github.com/Alhadis/OSC8-Adoption/#terminal-emulators)" ansible-vm: !/usr/bin/env -S bash -euo pipefail set -euo pipefail virt-install --name AlmaLinux-9 \
     --description 'Alma Linux 9' \
     --ram 4096 \
     --vcpus 4 \
@@ -49,3 +43,5 @@ ansible-vm:
     --cdrom ~/.local/share/libvirt/images/ISOS/AlmaLinux-9.6-x86_64-dvd.iso \
     --noautoconsole --destroy-on-exit
 #    --graphics vnc,listen=127.0.0.1,port=5901
+test-ansible:
+    ansible-playbook ansible/install.yml -i ansible/hosts.txt --ask-pass --ask-become-pass

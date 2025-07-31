@@ -16,7 +16,93 @@
         state: latest
         update_cache: yes
       tags: update
-    - name: Install Podman
+    - name: Install Packages
       dnf:
         name: "{{ packages }}"
         state: present
+    - name: Install dnf-plugins-core (includes dnf copr command)
+      dnf:
+        name: dnf-plugins-core
+        state: present
+
+    - name: Enable Caddy COPR repository
+      command: dnf copr enable -y @caddy/caddy
+      args:
+        creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:group_caddy:caddy.repo
+
+    - name: Install Caddy
+      dnf:
+        name: caddy
+        state: present
+
+    - name: Create Caddy directories (ensure proper ownership)
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: caddy
+        group: caddy
+        mode: "0755"
+      loop:
+        - /etc/caddy
+        - /var/lib/caddy
+        - /var/log/caddy
+
+    - name: Create basic Caddyfile
+      copy:
+        content: |
+          # Basic Caddyfile
+          # Replace with your domain and configuration
+          :80 {
+              respond "Hello from Caddy on AlmaLinux! test 123"
+          }
+
+          # Example with automatic HTTPS:
+          # your-domain.com {
+          #     root * /var/www/html
+          #     file_server
+          # }
+        dest: /etc/caddy/Caddyfile
+        owner: caddy
+        group: caddy
+        mode: "0644"
+      notify: restart caddy
+
+    - name: Enable and start Caddy service
+      systemd:
+        name: caddy
+        enabled: yes
+        state: started
+        daemon_reload: yes
+
+    - name: Open firewall for HTTP (port 80)
+      firewalld:
+        port: 80/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+    - name: Open firewall for HTTPS (port 443)
+      firewalld:
+        port: 443/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+    - name: Display Caddy service status
+      command: systemctl is-active caddy
+      register: caddy_status
+      changed_when: false
+
+    - name: Show installation result
+      debug:
+        msg:
+          - "Caddy installation completed!"
+          - "Service status: {{ caddy_status.stdout }}"
+          - "Edit /etc/caddy/Caddyfile to configure your sites"
+          - "Use 'sudo systemctl reload caddy' after configuration changes"
+
+  handlers:
+    - name: restart caddy
+      systemd:
+        name: caddy
+        state: restarted

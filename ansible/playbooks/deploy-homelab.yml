@@ -1,0 +1,6 @@
+---
+- name: Deploy homelab infrastructure
+  hosts: all
+  become: true
+  roles:
+    - postgres

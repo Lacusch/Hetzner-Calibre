@@ -1,0 +1,31 @@
+---
+- name: Install PostgreSQL repository
+  ansible.builtin.dnf:
+    name: "{{ postgres_repo_url }}"
+    state: present
+    disable_gpg_check: true
+
+- name: Disable built-in PostgreSQL module
+  ansible.builtin.command: dnf -qy module disable postgresql
+  changed_when: false
+
+- name: Install PostgreSQL server (and extensions)
+  ansible.builtin.dnf:
+    name:
+      - "postgresql{{ postgres_version }}-server"
+      - "postgresql{{ postgres_version }}-contrib"  # Useful extensions including `pg_stat_statements`
+#      - "postgresql{{ postgres_version }}" night not needed, test later
+      # https://github.com/postgres/postgres/tree/master/contrib
+    state: present
+
+- name: Initialize PostgreSQL database
+  ansible.builtin.command: "{{ postgres_bin_dir }}/postgresql-{{ postgres_version }}-setup initdb"
+  args:
+    creates: "{{ postgres_data_dir }}/PG_VERSION"
+  when: postgres_initdb_on_install | bool
+
+- name: Enable and start PostgreSQL service
+  ansible.builtin.systemd:
+    name: "{{ postgres_service_name }}"
+    enabled: "{{ postgres_auto_start | bool }}"
+    state: started

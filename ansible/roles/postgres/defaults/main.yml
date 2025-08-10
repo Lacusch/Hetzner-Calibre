@@ -1,0 +1,17 @@
+---
+# PostgreSQL version and configuration
+postgres_version: "17"
+postgres_repo_url: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-10-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
+
+# Service configuration
+postgres_service_name: "postgresql-{{ postgres_version }}"
+postgres_data_dir: "/var/lib/pgsql/{{ postgres_version }}/data"
+postgres_bin_dir: "/usr/pgsql-{{ postgres_version }}/bin"
+
+# Database initialization
+postgres_initdb_on_install: true
+postgres_auto_start: true
+
+# Security
+postgres_listen_addresses: "localhost"
+postgres_port: 5432

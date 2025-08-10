@@ -1,0 +1,6 @@
+---
+calibre_container_name: calibre
+calibre_image: docker.io/lacusch/calibre-server:-1.1
+calibre_library_dir: /root/calibre-libary
+calibre_port: 79
+calibre_timezone: "UTC"

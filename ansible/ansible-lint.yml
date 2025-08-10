@@ -1,3 +1,4 @@
+---
 # production profile is the strictrest out of the 5
 profile: production
 # https://ansible.readthedocs.io/projects/lint/configuring/#ansible-lint-configuration
@@ -7,7 +8,6 @@ profile: production
 var_naming_pattern: "^[a-z_][a-z0-9_]*$"
 # Enable strict rules for clean yaml
 warn_list: []
-
 enable_list:
   - name[missing]
   - name[casing]

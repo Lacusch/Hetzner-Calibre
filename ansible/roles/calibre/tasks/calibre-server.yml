@@ -1,15 +1,6 @@
 ---
-- name: Configure Calibre using Podman on Rocky Linux
-  hosts: calibre_server
-  remote_user: root
-  become: true
-  vars:
-    calibre_container_name: calibre
-    calibre_image: docker.io/lacusch/calibre-server:0.1
-    calibre_library_dir: /root/Calibre-Libary
-    calibre_port: 80
-    timezone: "Europe/Berlin"
-  tasks:
+- name: Intsall custom Calibre-web Docker/OCI image
+  block:
     - name: Install required packages
       ansible.builtin.dnf:
         name:
@@ -22,6 +13,7 @@
       containers.podman.podman_image:
         name: "{{ calibre_image }}"
         state: present
+
     - name: Copy example library to remote server
       ansible.builtin.copy:
         src: ../books/Calibre-Libary
@@ -30,6 +22,7 @@
         group: root
         mode: "0755"
         backup: true
+
     - name: Create systemd service file for Calibre container
       ansible.builtin.copy:
         dest: /etc/systemd/system/calibre-container.service
@@ -40,7 +33,6 @@
           [Unit]
           Description=Calibre Content Server container
           After=network.target
-
           [Service]
           Restart=always
           ExecStart=/usr/bin/podman run --rm --name {{ calibre_container_name }} \
@@ -50,7 +42,6 @@
             /usr/bin/calibre-server /etc/calibre/library
           ExecStop=/usr/bin/podman stop -t 10 {{ calibre_container_name }}
           ExecStopPost=/usr/bin/podman rm -f {{ calibre_container_name }}
-
           [Install]
           WantedBy=multi-user.target
 

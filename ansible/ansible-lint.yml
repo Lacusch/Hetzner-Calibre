@@ -1,0 +1,13 @@
+# production profile is the strictrest out of the 5
+profile: production
+# https://ansible.readthedocs.io/projects/lint/configuring/#ansible-lint-configuration
+# Enforce variable names to follow pattern below, in addition to Ansible own
+# requirements, like avoiding python identifiers. To disable add `var-naming`
+# to skip_list.
+var_naming_pattern: "^[a-z_][a-z0-9_]*$"
+# Enable strict rules for clean yaml
+warn_list: []
+
+enable_list:
+  - name[missing]
+  - name[casing]

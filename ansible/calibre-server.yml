@@ -1,3 +1,4 @@
+---
 - name: Configure Calibre using Podman on Rocky Linux
   hosts: calibre_server
   remote_user: root
@@ -10,27 +11,27 @@
     timezone: "Europe/Berlin"
   tasks:
     - name: Install required packages
-      dnf:
+      ansible.builtin.dnf:
         name:
           - podman
           - python3-podman
         state: present
-        update_cache: yes
+        update_cache: true
 
     - name: Pull Calibre Docker image
       containers.podman.podman_image:
         name: "{{ calibre_image }}"
         state: present
     - name: Copy example library to remote server
-      copy:
+      ansible.builtin.copy:
         src: ../books/Calibre-Libary
         dest: /root
         owner: root
         group: root
         mode: "0755"
-        backup: yes
+        backup: true
     - name: Create systemd service file for Calibre container
-      copy:
+      ansible.builtin.copy:
         dest: /etc/systemd/system/calibre-container.service
         owner: root
         group: root
@@ -54,8 +55,8 @@
           WantedBy=multi-user.target
 
     - name: Enable and start Calibre container service
-      systemd:
+      ansible.builtin.systemd:
         name: calibre-container.service
-        enabled: yes
+        enabled: true
         state: started
-        daemon_reload: yes
+        daemon_reload: true

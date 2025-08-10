@@ -1,6 +1,7 @@
+---
 - name: Install packages
   hosts: all
-  become: yes
+  become: true
   vars:
     packages:
       - podman
@@ -11,32 +12,31 @@
 
   tasks:
     - name: Update system packages
-      dnf:
-        name: "*"
-        state: latest
-        update_cache: yes
+      ansible.builtin.dnf:
+        state: present
+        update_cache: true
       tags: update
     - name: Install Packages
-      dnf:
+      ansible.builtin.dnf:
         name: "{{ packages }}"
         state: present
     - name: Install dnf-plugins-core (includes dnf copr command)
-      dnf:
+      ansible.builtin.dnf:
         name: dnf-plugins-core
         state: present
 
     - name: Enable Caddy COPR repository
-      command: dnf copr enable -y @caddy/caddy
+      ansible.builtin.command: dnf copr enable -y @caddy/caddy
       args:
         creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:group_caddy:caddy.repo
 
     - name: Install Caddy
-      dnf:
+      ansible.builtin.dnf:
         name: caddy
         state: present
 
     - name: Create Caddy directories (ensure proper ownership)
-      file:
+      ansible.builtin.file:
         path: "{{ item }}"
         state: directory
         owner: caddy
@@ -48,7 +48,7 @@
         - /var/log/caddy
 
     - name: Create basic Caddyfile
-      copy:
+      ansible.builtin.copy:
         content: |
           # Basic Caddyfile
           # Replace with your domain and configuration
@@ -65,36 +65,31 @@
         owner: caddy
         group: caddy
         mode: "0644"
-      notify: restart caddy
+      notify: Restart caddy
 
     - name: Enable and start Caddy service
-      systemd:
+      ansible.builtin.systemd:
         name: caddy
-        enabled: yes
+        enabled: true
         state: started
-        daemon_reload: yes
+        daemon_reload: true
 
     - name: Open firewall for HTTP (port 80)
-      firewalld:
+      ansible.posix.firewalld:
         port: 80/tcp
-        permanent: yes
+        permanent: true
         state: enabled
-        immediate: yes
+        immediate: true
 
     - name: Open firewall for HTTPS (port 443)
-      firewalld:
+      ansible.posix.firewalld:
         port: 443/tcp
-        permanent: yes
+        permanent: true
         state: enabled
-        immediate: yes
-
-    - name: Display Caddy service status
-      command: systemctl is-active caddy
-      register: caddy_status
-      changed_when: false
+        immediate: true
 
     - name: Show installation result
-      debug:
+      ansible.builtin.debug:
         msg:
           - "Caddy installation completed!"
           - "Service status: {{ caddy_status.stdout }}"
@@ -102,7 +97,7 @@
           - "Use 'sudo systemctl reload caddy' after configuration changes"
 
   handlers:
-    - name: restart caddy
-      systemd:
+    - name: Restart caddy
+      ansible.builtin.systemd:
         name: caddy
         state: restarted

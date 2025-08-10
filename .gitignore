@@ -36,10 +36,11 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+#ignore .env file that are added as local override
 .env
-variables.tf
-*.pub
-hosts.txt
+# Anslible is logging into the root directory for easier debugging
 *.log
-# ignore iso files
+# ignore iso files that might be symlinked
 *.iso
+# Ignore host file
+hosts.ini
